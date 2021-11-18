@@ -14,7 +14,8 @@ Simple blog app utility to test *FastAPI* library and *Docker* functionalities
   #+end_src
 - Launching Postgres database
   #+begin_src shell
-  docker run --name postgres-blog -e POSTGRES_PASSWORD=9632145 -p 5432:5432 --network host -d postgres
+  docker run --name postgres-blog -e POSTGRES_PASSWORD="" \
+      -p 5432:5432 --network host -d postgres
   #+end_src
 - Creating database =blog=
   #+begin_src shell
