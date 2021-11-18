@@ -1,0 +1,55 @@
+#+TITLE: Simple blog app
+
+Simple blog app utility to test *FastAPI* library and *Docker* functionalities
+
+** Docker testing
+
+- Building blog-app image
+  #+begin_src shell
+  docker build -t blogg .
+  #+end_src
+- Running blog app
+  #+begin_src shell
+  docker run -p 8000:8000 --network host blogg
+  #+end_src
+- Launching Postgres database
+  #+begin_src shell
+  docker run --name postgres-blog -e POSTGRES_PASSWORD=9632145 -p 5432:5432 --network host -d postgres
+  #+end_src
+- Creating database =blog=
+  #+begin_src shell
+  docker exec -it postgres-blog /bin/bash
+  # On the container:
+  psql -h localhost -p 5432 -U postgres -W
+  # On pgsql shell
+  create database blog;
+  \q
+  exit
+  #+end_src
+
+** Docker compose
+
+#+begin_src shell
+docker-compose -f docker-compose.yaml up --build
+#+end_src
+
+** Current Steps
+
+As I'm perfecting this, the steps are quite annoying
+
+1. User docker-compose
+   #+begin_src shell
+   docker-compose -f docker-compose.yaml up --build
+   #+end_src
+2. Above step will fail the *first* time.
+   Manually enter the =postgres-blog= container to create the database
+   #+begin_src shell
+   docker exec -it postgres-blog /bin/bash
+   # On the container:
+   psql -h localhost -p 5432 -U postgres -W
+   # On pgsql shell
+   create database blog;
+   \q
+   exit
+   #+end_src
+3. Run docker compose again. It should be ready
