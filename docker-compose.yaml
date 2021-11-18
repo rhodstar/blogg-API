@@ -1,0 +1,26 @@
+version: "3"
+services:
+  blogg:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: blogg
+    ports:
+      - "8000:8000"
+    network_mode: host
+    environment:
+      # Double quotes (") makes it crash in DATABASE_URL
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DATABASE}
+      - SECRET_KEY="${SECRET_KEY}"
+  postgres-blog:
+    image: postgres
+    container_name: postgres-blog
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD="${POSTGRES_PASSWORD}"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
